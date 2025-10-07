@@ -63,7 +63,7 @@ This GitHub Action monitors pull request status to identify:
 ```yaml
 - uses: ./.github/actions/pr-status-monitor
   with:
-    github-token: ${{ secrets.GITHUB_TOKEN }}
+    github-token: ${{ github.token }}
     slack-webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
     teams-webhook: ${{ secrets.TEAMS_WEBHOOK_URL }}
 ```

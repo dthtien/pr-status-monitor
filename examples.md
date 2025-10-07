@@ -9,6 +9,11 @@ on:
   schedule:
     - cron: '0 9 * * 1-5'  # Weekdays at 9 AM UTC
 
+permissions:
+  pull-requests: write
+  issues: write
+  contents: read
+
 jobs:
   monitor:
     runs-on: ubuntu-latest
@@ -16,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/pr-status-monitor
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ github.token }}
 ```
 
 ## Advanced Configuration
@@ -46,21 +51,21 @@ jobs:
       pull-requests: read
       checks: read
       contents: read
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          
+
       - name: Install and Build Action
         run: |
           cd .github/actions/pr-status-monitor
           npm install
           npm run build
-          
+
       - name: Run PR Monitor
         id: pr-monitor
         uses: ./.github/actions/pr-status-monitor
@@ -70,7 +75,7 @@ jobs:
           excludeLabels: ${{ inputs.excludeLabels || 'wip,draft' }}
           notifyChannel: ${{ secrets.SLACK_WEBHOOK_URL }}
           dryRun: ${{ github.event_name == 'workflow_dispatch' }}
-          
+
       - name: Post Summary
         if: steps.pr-monitor.outputs.stalled-count > 0
         run: |
@@ -133,7 +138,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           staleDays: '7'
-          
+
   weekly-report:
     if: github.event.schedule == '0 10 * * 1'
     runs-on: ubuntu-latest
@@ -144,7 +149,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           staleDays: '14'
           excludeLabels: 'wip,draft,experimental'
-          
+
   critical-check:
     if: github.event.schedule == '0 * * * *'
     runs-on: ubuntu-latest
@@ -181,19 +186,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: PR Status Monitor
         id: pr-monitor
         uses: ./.github/actions/pr-status-monitor
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Security Scan
         uses: github/super-linter@v4
-        
+
       - name: Dependency Check
         uses: actions/dependency-review-action@v3
-        
+
       - name: Combined Report
         if: always()
         run: |
@@ -217,7 +222,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           staleDays: '3'  # More aggressive for dev
           excludeLabels: 'wip'
-          
+
   monitor-main:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'

@@ -149,7 +149,6 @@ async function createIssue(title, body, labels = []) {
 async function getIssueComments(issueNumber) {
   _initialize();
   try {
-    console.log(`Fetching comments for issue #${issueNumber}`);
     const { data } = await _octokit.rest.issues.listComments({
       owner: _owner,
       repo: _repo,
@@ -220,7 +219,6 @@ async function commentOnPRs(prs, messageTemplate, dayThreshold = 7) {
           .replace('{days}', pr.daysSinceCreated || pr.daysSinceUpdate)
           .replace('{assignees}', assignees);
 
-        console.log(`PR #${pr.number} - Commenting with message: ${message}`);
         core.info(`💬 Commenting on PR #${pr.number} with message: ${message}`);
 
         await createComment(pr.number, message);
