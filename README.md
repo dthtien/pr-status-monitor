@@ -1,5 +1,11 @@
 # PR Status Monitor Configuration
 
+This project is a GitHub Action that monitors pull requests (PRs) in a repository to identify stalled, unassigned, or
+blocked PRs. It generates a detailed report and can optionally post comments on the PRs, create summary issues, and send
+notifications.
+
+For learning Github Actions purpose.
+
 ## Overview
 This GitHub Action monitors pull request status to identify:
 - **Stalled PRs**: PRs with no activity for a specified number of days
