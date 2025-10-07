@@ -1,0 +1,57 @@
+name: PR Status Monitor
+description: 'Monitor PR status to identify stalled, unassigned, or blocked pull requests'
+author: 'GitHub Action Expert'
+branding:
+  icon: 'activity'
+  color: 'blue'
+
+inputs:
+  github-token:
+    description: 'GitHub token for API access'
+    required: true
+  stale-days:
+    description: 'Number of days to consider a PR as stale'
+    required: false
+    default: '7'
+  old-days:
+    description: 'Number of days to consider a PR as old/long-running'
+    required: false
+    default: '30'
+  blocked-labels:
+    description: 'Comma-separated list of labels that indicate a PR is blocked'
+    required: false
+    default: 'blocked,wip,draft'
+  create-issue:
+    description: 'Create a GitHub issue with the report'
+    required: false
+    default: 'true'
+  issue-labels:
+    description: 'Comma-separated list of labels to add to the created issue'
+    required: false
+    default: 'pr-monitor,automated'
+  auto-comment:
+    description: 'Automatically comment on stalled PRs'
+    required: false
+    default: 'false'
+  comment-message:
+    description: 'Message template for auto-comments (use {days} placeholder)'
+    required: false
+    default: '⚠️ This PR has been inactive for {days} days. Please review and take action. cc: {assignees}'
+  slack-webhook:
+    description: 'Slack webhook URL for notifications'
+    required: false
+  teams-webhook:
+    description: 'Microsoft Teams webhook URL for notifications'
+    required: false
+  ignore-drafts:
+    description: 'Skip draft PRs from monitoring'
+    required: false
+    default: 'false'
+  auto-assign-codeowners:
+    description: 'Automatically assign code owners to unassigned PRs'
+    required: false
+    default: 'true'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
