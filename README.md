@@ -42,14 +42,14 @@ This GitHub Action monitors pull request status to identify:
 
 ### Basic Usage
 ```yaml
-- uses: ./.github/actions/pr-status-monitor
+- uses: dthtien/pr-status-monitor@v1.0.0
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ### Custom Configuration
 ```yaml
-- uses: ./.github/actions/pr-status-monitor
+- uses: dthtien/pr-status-monitor@v1.0.0
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
     stale-days: '14'
@@ -61,7 +61,7 @@ This GitHub Action monitors pull request status to identify:
 
 ### With Notifications
 ```yaml
-- uses: ./.github/actions/pr-status-monitor
+- uses: dthtien/pr-status-monitor@v1.0.0
   with:
     github-token: ${{ github.token }}
     slack-webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -81,7 +81,7 @@ The action is designed to run on a schedule (weekdays at 9 AM UTC) and can also 
 
 ## Permissions Required
 - `issues: write` - To post comments and create summary issues
-- `pull-requests: read` - To fetch PR data
+- `pull-requests: read` - To fetch PR data. Set it to `write` if you want to automatically assign PRs
 - `checks: read` - To check CI/CD status
 - `contents: read` - To access repository information
 
